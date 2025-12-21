@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Convert2Arabic | Modern UI</title>
     
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Cairo:400,700&display=swap" rel="stylesheet">
+    
+    <!-- Cairo Font (Arabic + Latin support) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -28,7 +33,10 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        h1 { font-weight: 700; letter-spacing: 1px; }
+        h1 {
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
 
         textarea {
             background: rgba(255, 255, 255, 0.05) !important;
@@ -45,8 +53,6 @@
         }
 
         .btn-convert {
-            background: #ff416c;
-            background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
             background: linear-gradient(to right, #ff4b2b, #ff416c);
             border: none;
             color: white;
@@ -64,9 +70,15 @@
             border-radius: 30px;
         }
 
-        .btn:hover { transform: scale(1.05); color: #fff; }
+        .btn:hover {
+            transform: scale(1.05);
+            color: #fff;
+        }
 
-        .footer-text { font-size: 0.9rem; opacity: 0.8; }
+        .footer-text {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
     </style>
 </head>
 
@@ -75,29 +87,33 @@
         <div class="row justify-content-center">
             <div class="col-lg-10 glass-card">
                 <header class="text-center mb-5">
-                    <h1 class="display-4">Convert2Arabic <i class="fas fa-magic"></i></h1>
+                    <h1 class="display-4"><i class="fas fa-language me-2"></i>Convert2Arabic <i class="fas fa-magic ms-2"></i></h1>
                     <p class="lead">Franco-Arabic To Arabic Converter</p>
-                    <p dir="rtl">حول نصوص الفرانكو إلى لغة عربية سليمة بضغطة زر</p>
+                    <p>حول نصوص بأحرف انجليزية إلى لغة عربية سليمة بضغطة زر</p>
                 </header>
 
                 <div class="row g-4">
                     <div class="col-md-6">
-                        <label class="form-label"><i class="fas fa-keyboard"></i> Franco (Latin)</label>
-                        <textarea id="text" class="form-control" rows="8" placeholder="Type here (e.g., Ahla sa7bi)..."></textarea>
+                        <label class="form-label d-flex align-items-center gap-2">
+                            <i class="fas fa-font"></i> Franco (Latin)
+                        </label>
+                        <textarea id="text" class="form-control" rows="8" placeholder="Ahla sa7bi, 3andek chi khabar?"></textarea>
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label"><i class="fas fa-language"></i> Arabic Result</label>
-                        <textarea id="text2" class="form-control" rows="8" dir="rtl" readonly placeholder="النتيجة هنا..."></textarea>
+                        <label class="form-label d-flex align-items-center gap-2">
+                            <i class="fas fa-comment-dots"></i> Arabic Result
+                        </label>
+                        <textarea id="text2" class="form-control" rows="8" dir="rtl" readonly placeholder="النتيجة ستظهر هنا..."></textarea>
                     </div>
                 </div>
 
                 <div class="row mt-4 align-items-center">
                     <div class="col-md-6 d-flex gap-2">
                         <button id="submit" class="btn btn-convert shadow-sm w-100">
-                            <i class="fas fa-exchange-alt"></i> Convert
+                            <i class="fas fa-arrow-right-to-bracket me-2"></i> Convert
                         </button>
                         <button id="clear" class="btn btn-clear w-100">
-                            <i class="fas fa-eraser"></i> Clear
+                            <i class="fas fa-broom me-2"></i> Clear
                         </button>
                     </div>
                     <div class="col-md-6 text-center text-md-end mt-3 mt-md-0">
@@ -110,18 +126,21 @@
         </div>
     </div>
 
-    <script src="jquery.min.js"></script>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="converter.js"></script>
     <script>
-        $("#submit").click(function () {
-            var text = $("#text").val();
-            var result = convert2Arabic(text);
-            $("#text2").val(result);
-        });
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                var text = $("#text").val();
+                var result = convert2Arabic(text);
+                $("#text2").val(result);
+            });
 
-        $("#clear").click(function () {
-            $("#text").val('');
-            $("#text2").val('');
+            $("#clear").click(function () {
+                $("#text").val('');
+                $("#text2").val('');
+            });
         });
     </script>
 </body>
