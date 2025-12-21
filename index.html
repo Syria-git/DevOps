@@ -5,21 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Convert2Arabic | 🌟 فرنكو إلى عربي</title>
     
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Cairo Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         body {
-            /* Soft cyan gradient background */
             background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
-            /* Optional: add subtle pattern */
-            /* background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); */
             font-family: 'Cairo', sans-serif;
             min-height: 100vh;
             display: flex;
@@ -60,12 +52,6 @@
             color: rgba(255, 255, 255, 0.6) !important;
         }
 
-        textarea:focus {
-            background: rgba(0, 0, 0, 0.15) !important;
-            border-color: #00e5ff !important;
-            box-shadow: 0 0 0 0.25rem rgba(0, 229, 255, 0.25) !important;
-        }
-
         .btn-convert {
             background: linear-gradient(120deg, #00c6ff, #0072ff);
             border: none;
@@ -102,18 +88,6 @@
             font-size: 0.95rem;
             opacity: 0.9;
         }
-
-        /* Ensure perfect vertical & horizontal centering */
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .emoji {
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-        }
     </style>
 </head>
 
@@ -122,9 +96,8 @@
         <div class="glass-card">
             <header class="text-center mb-4">
                 <h1 class="display-5">
-                    <i class="fas fa-language emoji"></i> 
-                    Convert2Arabic 🌍 ➡️ 📝
-                    <i class="fas fa-magic emoji"></i>
+                    <i class="fas fa-language"></i> Convert2Arabic 🌍 ➡️ 📝
+                    <i class="fas fa-magic"></i>
                 </h1>
                 <p class="lead mb-1">محوّل الفرانكو إلى العربية 🇸🇦🇪🇬🇹🇳</p>
                 <p class="text-muted">اكتب بالفرانكو... واحصل على نص عربي أنيق! ✨</p>
@@ -135,13 +108,13 @@
                     <label class="form-label d-flex align-items-center gap-2">
                         <i class="fas fa-keyboard"></i> 📤 النص بالفرانكو (لاتيني)
                     </label>
-                    <textarea id="text" class="form-control" rows="8" placeholder="مرحبا! كيفك؟ عندي خبر حلو 😊&#10;3andek chi khabar? Ahla bik!"></textarea>
+                    <textarea id="text" class="form-control" rows="8" placeholder="Ahla! kifek? 3andek chi khabar? 😊"></textarea>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label d-flex align-items-center gap-2">
                         <i class="fas fa-comment-dots"></i> 📥 النتيجة بالعربية
                     </label>
-                    <textarea id="text2" class="form-control" rows="8" dir="rtl" readonly placeholder="النتيجة ستظهر هنا تلقائيًا... 🌟"></textarea>
+                    <textarea id="text2" class="form-control" rows="8" dir="rtl" readonly placeholder="النتيجة هنا..."></textarea>
                 </div>
             </div>
 
@@ -163,28 +136,86 @@
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="converter.js"></script>
+    <!-- No external jQuery or converter.js needed -->
     <script>
-        $(document).ready(function () {
-            $("#submit").click(function () {
-                var text = $("#text").val();
-                var result = convert2Arabic(text);
-                $("#text2").val(result || "🔍 لم يتم إدخال نص!");
-            });
+        // 🔄 Franco-to-Arabic mapping
+        const francoToArabicMap = {
+            // Letters
+            'a': 'ا',
+            'b': 'ب',
+            't': 'ت',
+            'th': 'ث',
+            'j': 'ج',
+            '7': 'ح',
+            'kh': 'خ',
+            'd': 'د',
+            'dh': 'ذ',
+            'r': 'ر',
+            'z': 'ز',
+            's': 'س',
+            'sh': 'ش',
+            'S': 'ص',
+            'D': 'ض',
+            'T': 'ط',
+            'Z': 'ظ',
+            '3': 'ع',
+            'gh': 'غ',
+            'f': 'ف',
+            'q': 'ق',
+            'k': 'ك',
+            'l': 'ل',
+            'm': 'م',
+            'n': 'ن',
+            'h': 'ه',
+            'w': 'و',
+            'y': 'ي',
+            '2': 'ء',
+            '5': 'خ', // alternative sometimes used
+            '6': 'ط', // rarely used, but included for completeness
 
-            $("#clear").click(function () {
-                $("#text").val('');
-                $("#text2").val('');
-            });
+            // Common diacritics or combos (simplified)
+            'aa': 'ا',
+            'ee': 'ي',
+            'oo': 'و',
+            'ou': 'و',
+            'ch': 'ش',
+            'dj': 'ج',
+            'dj': 'ج',
+            '9': 'ق',
+            '8': 'غ',
+        };
 
-            // Optional: auto-convert on typing (uncomment if desired)
-            // $("#text").on('input', function() {
-            //     var text = $(this).val();
-            //     var result = convert2Arabic(text);
-            //     $("#text2").val(result || '');
-            // });
+        // 💡 Convert function
+        function convert2Arabic(francoText) {
+            if (!francoText) return '';
+
+            let input = francoText.toLowerCase();
+
+            // Sort keys by length (longest first) to match "sh" before "s", etc.
+            const sortedKeys = Object.keys(francoToArabicMap).sort((a, b) => b.length - a.length);
+
+            for (const key of sortedKeys) {
+                const regex = new RegExp(key, 'g');
+                input = input.replace(regex, francoToArabicMap[key]);
+            }
+
+            // Clean up extra spaces or artifacts
+            return input
+                .replace(/([ا])\1+/g, '$1') // reduce repeated alifs
+                .replace(/\s+/g, ' ')        // normalize spaces
+                .trim();
+        }
+
+        // 🎯 Button functionality
+        document.getElementById('submit').addEventListener('click', function () {
+            const input = document.getElementById('text').value;
+            const output = convert2Arabic(input);
+            document.getElementById('text2').value = output || '🔍 لم يتم إدخال نص!';
+        });
+
+        document.getElementById('clear').addEventListener('click', function () {
+            document.getElementById('text').value = '';
+            document.getElementById('text2').value = '';
         });
     </script>
 </body>
