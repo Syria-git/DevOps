@@ -1,58 +1,45 @@
 pipeline {
-    agent any
+    agent any // يبدأ التنفيذ على الماستر لتهيئة الحاوية
+
+    environment {
+        AGENT_IMAGE = "my-project-builder:${env.BUILD_NUMBER}"
+        CONTAINER_NAME = "agent-worker-${env.BUILD_NUMBER}"
+    }
 
     stages {
-        stage('Checkout') {
+        stage('Build Agent Image') {
             steps {
-                echo 'جاري جلب الكود من GitHub...'
-                checkout scm
+                echo 'Building the dedicated agent image...'
+                // بناء الصورة من Dockerfile موجود في نفس مشروعك
+                sh "docker build -t ${AGENT_IMAGE} ."
             }
         }
 
-        stage('Build - Archive Project') {
+        stage('Run Dynamic Agent') {
             steps {
-                echo 'جاري ضغط ملفات المشروع...'
-                sh 'zip project_files.zip index.html style.css converter.js jquery.min.js favicon.ico'
-                archiveArtifacts artifacts: 'project_files.zip', fingerprint: true
+                echo 'Starting the agent container...'
+                // تشغيل الحاوية وتمرير مجلد المشروع لها
+                sh "docker run -d --name ${CONTAINER_NAME} -v ${WORKSPACE}:/app -w /app ${AGENT_IMAGE} sleep 300"
             }
         }
 
-        stage('Build and Run Docker') {
+        stage('Execute Tasks Inside Agent') {
             steps {
-                echo 'جاري بناء صورة Docker وتشغيل الحاوية...'
-                script {
-                    // Build Docker image
-                    def image = docker.build("web-converter-app:${env.BUILD_ID}")
-
-                    // Stop and remove any existing container (optional cleanup)
-                    sh 'docker stop web-converter-app || true'
-                    sh 'docker rm web-converter-app || true'
-
-                    // Run container on port 8080
-                    image.run("--name web-converter-app -d -p 8080:80")
-                }
-            }
-        }
-
-        stage('Deploy to Web Server') {
-            steps {
-                echo 'جاري نشر الموقع على سيرفر Apache...'
-                sh 'cp index$html style.css converter.js jquery.min.js favicon.ico /var/www/html/convert/'
-            }
-        }
-
-        stage('Quality Check') {
-            steps {
-                echo 'تم فحص جودة الملفات بنجاح.'
+                echo 'Running build/deploy commands inside the container...'
+                // تنفيذ الأوامر داخل الحاوية التي أنشأناها
+                sh "docker exec ${CONTAINER_NAME} zip -r project.zip ."
+                sh "docker exec ${CONTAINER_NAME} cp -r . /var/www/html/convert/"
             }
         }
     }
 
     post {
-        success {
-            echo 'تمت عملية البناء بنجاح! جاري حفظ الملف المضغوط...'
-            echo 'تم النشر بنجاح! يمكنك الآن زيارة الموقع عبر المتصفح.'
-            echo 'أو قم بزيارة التطبيق داخل الحاوية على المنفذ 8080.'
+        always {
+            echo 'Cleaning up: Stopping and removing the agent container...'
+            sh "docker stop ${CONTAINER_NAME} || true"
+            sh "docker rm ${CONTAINER_NAME} || true"
+            // اختياري: حذف الصورة لتوفير المساحة
+            sh "docker rmi ${AGENT_IMAGE} || true"
         }
     }
 }

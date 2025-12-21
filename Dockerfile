@@ -1,11 +1,5 @@
-# استخدم صورة nginx الرسمية كخادم ويب خفيف
-FROM nginx:alpine
-
-# احذف الملفات الافتراضية لـ nginx
-RUN rm -rf /usr/share/nginx/html/*
-
-# انسخ ملفات موقعك إلى مجلد الخدمة
-COPY index.html style.css converter.js jquery.min.js favicon.ico /usr/share/nginx/html/
-
-# المنفذ الافتراضي لـ nginx هو 80
-EXPOSE 80
+FROM ubuntu:22.04
+RUN apt-get update && apt-get install -y \
+    zip unzip curl git \
+    && rm -rf /var/lib/apt/lists/*
+# هذا الـ Agent لا يحتاج لـ SSH لأنه يدار عبر docker exec
