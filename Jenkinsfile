@@ -18,18 +18,29 @@ pipeline {
         stage('Run Dynamic Agent') {
             steps {
                 echo 'Starting the agent container...'
-                // تشغيل الحاوية وتمرير مجلد المشروع لها
-                sh "docker run -d --name ${CONTAINER_NAME} -v ${WORKSPACE}:/app -w /app ${AGENT_IMAGE} sleep 300"
+                
+// تشغيل الحاوية وتمرير مجلد المشروع لها
+sh """
+        docker run -d --name ${CONTAINER_NAME} \
+        --network host \
+        -e http_proxy=http://10.0.68.19:8080 \
+        -e https_proxy=http://10.0.68.19:8080 \
+        -v /var/www/html:/var/www/html \
+        -v ${WORKSPACE}:/app -w /app ${AGENT_IMAGE} sleep 300
+        """              
             }
         }
 
         stage('Execute Tasks Inside Agent') {
             steps {
-                echo 'Running build/deploy commands inside the container...'
-                // تنفيذ الأوامر داخل الحاوية التي أنشأناها
-                sh "docker exec ${CONTAINER_NAME} zip -r project.zip ."
-                sh "docker exec ${CONTAINER_NAME} cp -r . /var/www/html/convert/"
-            }
+        // إنشاء المجلد داخل المسار المربوط (الذي يشير للسيرفر الحقيقي)
+        sh "docker exec ${CONTAINER_NAME} mkdir -p /var/www/html/convert"
+        
+        // نسخ الملفات من مجلد العمل /app إلى المجلد المستهدف
+        sh "docker exec ${CONTAINER_NAME} cp -r . /var/www/html/convert/"
+        
+        echo "Deployment successful to http://10.0.68.94/convert/"
+    }
         }
     }
 
