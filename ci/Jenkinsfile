@@ -1,0 +1,55 @@
+pipeline {
+    agent any
+
+    environment {
+        AGENT_IMAGE    = "convert2arabic-agent:${env.BUILD_NUMBER}"
+        CONTAINER_NAME = "convert2arabic-${env.BUILD_NUMBER}"
+    }
+
+    stages {
+
+        stage('Build Agent Image') {
+            steps {
+                echo 'Building Docker agent image...'
+                sh """
+                  docker build \
+                  --build-arg http_proxy=\$HTTP_PROXY \
+                  --build-arg https_proxy=\$HTTPS_PROXY \
+                  -t ${AGENT_IMAGE} ci/
+                """
+            }
+        }
+
+        stage('Run Dynamic Agent') {
+            steps {
+                echo 'Starting dynamic agent container...'
+                sh """
+                  docker run -d --name ${CONTAINER_NAME} \
+                  --network host \
+                  -v ${WORKSPACE}/app:/app \
+                  -v /var/www/html:/var/www/html \
+                  -w /app \
+                  ${AGENT_IMAGE} sleep 300
+                """
+            }
+        }
+
+        stage('Deploy Application') {
+            steps {
+                echo 'Deploying application...'
+                sh """
+                  docker exec ${CONTAINER_NAME} mkdir -p /var/www/html/convert
+                  docker exec ${CONTAINER_NAME} cp -r . /var/www/html/convert/
+                """
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up resources...'
+            sh "docker rm -f ${CONTAINER_NAME} || true"
+            sh "docker rmi ${AGENT_IMAGE} || true"
+        }
+    }
+}
