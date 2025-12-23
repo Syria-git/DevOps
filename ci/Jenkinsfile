@@ -13,6 +13,7 @@ pipeline {
                 echo 'Building Docker agent image...'
                 sh """
                   docker build \
+		  --network=host\
                   --build-arg http_proxy=\$HTTP_PROXY \
                   --build-arg https_proxy=\$HTTPS_PROXY \
                   -t ${AGENT_IMAGE} ci/
