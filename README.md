@@ -55,6 +55,11 @@ make deploy
 make clean
 
 
+## **🔁 CI/CD Pipeline Diagram**
+
+![Dynamic Docker Agent Jenkins CI/CD Pipeline](pipeline-diagram.png)
+
+
 This allows consistent execution locally and mirrors CI behavior where applicable.
 
 🔐 Proxy Configuration (Enterprise Best Practice)
