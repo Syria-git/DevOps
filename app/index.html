@@ -1,249 +1,289 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Convert2Arabic | 🌿 فرنكو إلى عربي</title>
+  <meta charset="utf-8" />
+  <meta name="webtoken" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Convert2Arabic | 🌿 فرنكو إلى عربي</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-    <!-- Cairo Font for Arabic -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #f0f2f5; /* Soft, neutral gray — like Slack or GitHub background */
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(0, 0, 0, 0.1);
+      --text-primary: #2d3748;
+      --text-muted: #718096;
+      --input-bg: #ffffff;
+      --input-border: #e2e8f0;
+      --input-focus-border: #48bb78;
+      --input-focus-shadow: 0 0 0 3px rgba(72, 187, 120, 0.2);
+      --btn-convert-bg: linear-gradient(120deg, #2ecc71, #27ae60);
+      --btn-clear-bg: #edf2f7;
+      --btn-clear-border: #cbd5e0;
+      --btn-clear-hover: #e2e8f0;
+      --footer-border: #e2e8f0;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
 
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    * {
+      box-sizing: border-box;
+    }
 
-    <style>
-        body {
-            /* 🌿 Green gradient background */
-            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
-            font-family: 'Cairo', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            padding: 1rem;
-        }
+    body {
+      background-color: var(--bg-color);
+      font-family: 'Cairo', sans-serif;
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      margin: 0;
+    }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            padding: 2.5rem;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-            max-width: 900px;
-            width: 100%;
-        }
+    .converter-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      max-width: 900px;
+      width: 100%;
+      animation: fadeInUp 0.5s ease-out;
+    }
 
-        h1 {
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-        }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        textarea {
-            background: rgba(0, 0, 0, 0.1) !important;
-            border: 1px solid rgba(255, 255, 255, 0.3) !important;
-            color: #ffffff !important;
-            border-radius: 14px !important;
-            font-size: 1.15rem !important;
-            padding: 1rem !important;
-        }
+    .converter-header h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #2d3748;
+    }
 
-        textarea::placeholder {
-            color: rgba(255, 255, 255, 0.6) !important;
-        }
+    .converter-header p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
 
-        .btn-convert {
-            background: linear-gradient(120deg, #2ecc71, #27ae60);
-            border: none;
-            color: white;
-            padding: 14px 32px;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
-        }
+    .input-group label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      font-size: 1rem;
+      color: #4a5568;
+    }
 
-        .btn-convert:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.6);
-        }
+    textarea {
+      background: var(--input-bg) !important;
+      border: 1px solid var(--input-border) !important;
+      color: var(--text-primary) !important;
+      border-radius: 16px !important;
+      font-size: 1.1rem !important;
+      padding: 1.1rem !important;
+      height: 200px !important;
+      resize: none;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
 
-        .btn-clear {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: white;
-            padding: 14px 32px;
-            border-radius: 50px;
-            font-weight: bold;
-            transition: all 0.25s ease;
-        }
+    textarea:focus {
+      border-color: var(--input-focus-border) !important;
+      box-shadow: var(--input-focus-shadow) !important;
+    }
 
-        .btn-clear:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateY(-2px);
-        }
+    textarea::placeholder {
+      color: #a0aec0 !important;
+      font-style: italic;
+    }
 
-        .footer-text {
-            font-size: 0.95rem;
-            opacity: 0.9;
-        }
-    </style>
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn-convert {
+      flex: 1;
+      min-width: 200px;
+      background: var(--btn-convert-bg);
+      border: none;
+      color: white;
+      padding: 14px 24px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .btn-convert:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(39, 174, 96, 0.45);
+    }
+
+    .btn-clear {
+      flex: 1;
+      min-width: 200px;
+      background: var(--btn-clear-bg);
+      border: 1px solid var(--btn-clear-border);
+      color: #4a5568;
+      padding: 14px 24px;
+      border-radius: 50px;
+      font-weight: 700;
+      transition: all 0.25s ease;
+    }
+
+    .btn-clear:hover {
+      background: var(--btn-clear-hover);
+      transform: translateY(-2px);
+      border-color: #a0aec0;
+    }
+
+    .footer-meta {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--footer-border);
+    }
+
+    @media (max-width: 768px) {
+      .converter-card {
+        padding: 1.5rem;
+      }
+      .action-buttons {
+        flex-direction: column;
+      }
+      .btn-convert, .btn-clear {
+        min-width: auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 0.75rem;
+      }
+      textarea {
+        height: 180px !important;
+        font-size: 1rem !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="glass-card">
-            <header class="text-center mb-4">
-                <h1 class="display-5">
-                    <i class="fas fa-language"></i> Convert2Arabic 🌍 ➡️ 📝
-                    <i class="fas fa-magic"></i>
-                </h1>
-                <p class="lead mb-1">محوّل الفرانكو إلى العربية 🇸🇦🇪🇬🇹🇳</p>
-                <p class="text-muted">اكتب بالفرانكو... واحصل على نص عربي أنيق! ✨</p>
-            </header>
+  <div class="container">
+    <div class="converter-card">
+      <header class="converter-header text-center">
+        <h1>
+          <i class="fas fa-language me-2"></i> Convert2Arabic 🌍 ➡️ 📝
+          <i class="fas fa-magic ms-2"></i>
+        </h1>
+        <p>محوّل الفرانكو إلى العربية 🇸🇦🇪🇬🇹🇳</p>
+        <p class="text-muted">اكتب بالفرانكو... واحصل على نص عربي أنيق! ✨</p>
+      </header>
 
-            <div class="row g-4 mb-4">
-                <div class="col-md-6">
-                    <label class="form-label d-flex align-items-center gap-2">
-                        <i class="fas fa-keyboard"></i> 📤 النص بالفرانكو (لاتيني)
-                    </label>
-                    <textarea id="text" class="form-control" rows="8" placeholder="Ahla! kifek? 3andek chi khabar? 😊"></textarea>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label d-flex align-items-center gap-2">
-                        <i class="fas fa-comment-dots"></i> 📥 النتيجة بالعربية
-                    </label>
-                    <textarea id="text2" class="form-control" rows="8" dir="rtl" readonly placeholder="النتيجة هنا..."></textarea>
-                </div>
-            </div>
-
-            <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
-                <div class="d-flex gap-2 w-100">
-                    <button id="submit" class="btn btn-convert flex-fill">
-                        <i class="fas fa-arrow-right-to-bracket me-2"></i> حوّل الآن! 🚀
-                    </button>
-                    <button id="clear" class="btn btn-clear flex-fill">
-                        <i class="fas fa-broom me-2"></i> مسح الكل 🧹
-                    </button>
-                </div>
-                <div class="text-center text-md-end align-self-center">
-                    <p class="footer-text mb-0">
-                        💌 مصنوع بحب بواسطة <strong>Adem Kouki</strong> ❤️
-  															<strong>Used only for Testin CI/CD</strong>                
-		 </p>
-                </div>
-            </div>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="input-group">
+            <label for="text">
+              <i class="fas fa-keyboard"></i> 📤 النص بالفرانكو (لاتيني)
+            </label>
+            <textarea
+              id="text"
+              class="form-control"
+              placeholder="Ahla! kifek? 3andek chi khabar? 😊"
+            ></textarea>
+          </div>
         </div>
+
+        <div class="col-md-6">
+          <div class="input-group">
+            <label for="text2">
+              <i class="fas fa-comment-dots"></i> 📥 النتيجة بالعربية
+            </label>
+            <textarea
+              id="text2"
+              class="form-control"
+              dir="rtl"
+              readonly
+              placeholder="النتيجة هنا..."
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="action-buttons">
+        <button id="submit" class="btn btn-convert">
+          <i class="fas fa-arrow-right-to-bracket ms-2"></i> حوّل الآن! 🚀
+        </button>
+        <button id="clear" class="btn btn-clear">
+          <i class="fas fa-broom ms-2"></i> مسح الكل 🧹
+        </button>
+      </div>
+
+      <div class="footer-meta">
+        💌 مصنوع بحب بواسطة <strong>Adem Kouki</strong> ❤️
+      </div>
+      <div class="footer-meta">
+        💌  <strong>Edited To Test CI/CD By Syria-Git</strong> ❤️
+      </div>
+
     </div>
+  </div>
 
-    <!-- ✅ Fully working converter (no external files!) -->
-    <script>
-        // Franco-to-Arabic conversion dictionary (expand as needed)
-        function convert2Arabic(str) {
-            if (!str) return '';
+  <!-- Converter Logic -->
+  <script>
+    function convert2Arabic(str) {
+      if (!str) return '';
+      let input = str.toLowerCase();
+      const replacements = [
+        [/7am/g, "حم"], [/fama/g, "فما"], [/bedhabt/g, "بالظبط"], [/7ata/g, "حتى"],
+        [/ ma /g, " ما "], [/dar/g, "دار"], [/houwa/g, "هو"], [/ahla/g, "اهلا"],
+        [/heyya/g, "هيّا"], [/howa/g, "هو"], [/ana/g, "أنا"], [/inta/g, "إنتا"],
+        [/enti/g, "إنتي"], [/kifek/g, "كيفك"], [/kifich/g, "كيفاش"], [/chnowa/g, "شنوّا"],
+        [/chno/g, "شنو"], [/wach/g, "واش"], [/mazal/g, "مازال"], [/bghit/g, "بغيت"],
+        [/3andek/g, "عندك"], [/3andi/g, "عندي"], [/3and/g, "عند"], [/makaynsh/g, "ماكاينش"],
+        [/makayench/g, "ماكاينش"], [/la/g, "لا"], [/machi/g, "ماشي"], [/ou/g, "و"],
+        [/walla/g, "واللا"], [/yallah/g, "يلا"], [/safi/g, "صافي"], [/mzyan/g, "مزيان"],
+        [/bzef/g, "بزاف"], [/daba/g, "دابا"], [/haja/g, "حاجة"], [/rah/g, "راه"],
+        [/7/g, "ح"], [/3/g, "ع"], [/9/g, "ق"], [/8/g, "غ"], [/5/g, "خ"], [/2/g, "ء"],
+        [/T/g, "ط"], [/S/g, "ص"], [/D/g, "ض"], [/Z/g, "ظ"], [/kh/g, "خ"], [/gh/g, "غ"],
+        [/ch/g, "ش"], [/dj/g, "ج"], [/th/g, "ث"], [/dh/g, "ذ"], [/sh/g, "ش"], [/a/g, "ا"],
+        [/b/g, "ب"], [/t/g, "ت"], [/j/g, "ج"], [/d/g, "د"], [/r/g, "ر"], [/z/g, "ز"],
+        [/s/g, "س"], [/f/g, "ف"], [/q/g, "ق"], [/k/g, "ك"], [/l/g, "ل"], [/m/g, "م"],
+        [/n/g, "ن"], [/h/g, "ه"], [/w/g, "و"], [/y/g, "ي"]
+      ];
 
-            let input = str.toLowerCase();
+      replacements.forEach(([pattern, replacement]) => {
+        input = input.replace(pattern, replacement);
+      });
 
-            // 🔤 Character-level replacements (longest first to avoid conflicts)
-            const replacements = [
-                [/7am/g, "حم"],
-                [/fama/g, "فما"],
-                [/bedhabt/g, "بالظبط"],
-                [/7ata/g, "حتى"],
-                [/ ma /g, " ما "],
-                [/dar/g, "دار"],
-                [/houwa/g, "هو"],
-                [/ahla/g, "اهلا"],
-                [/heyya/g, "هيّا"],
-                [/howa/g, "هو"],
-                [/ana/g, "أنا"],
-                [/inta/g, "إنتا"],
-                [/enti/g, "إنتي"],
-                [/kifek/g, "كيفك"],
-                [/kifich/g, "كيفاش"],
-                [/chnowa/g, "شنوّا"],
-                [/chno/g, "شنو"],
-                [/wach/g, "واش"],
-                [/mazal/g, "مازال"],
-                [/bghit/g, "بغيت"],
-                [/3andek/g, "عندك"],
-                [/3andi/g, "عندي"],
-                [/3and/g, "عند"],
-                [/makaynsh/g, "ماكاينش"],
-                [/makayench/g, "ماكاينش"],
-                [/la/g, "لا"],
-                [/machi/g, "ماشي"],
-                [/ou/g, "و"],
-                [/walla/g, "واللا"],
-                [/yallah/g, "يلا"],
-                [/safi/g, "صافي"],
-                [/mzyan/g, "مزيان"],
-                [/bzef/g, "بزاف"],
-                [/daba/g, "دابا"],
-                [/haja/g, "حاجة"],
-                [/rah/g, "راه"],
-                // Single letters
-                [/7/g, "ح"],
-                [/3/g, "ع"],
-                [/9/g, "ق"],
-                [/8/g, "غ"],
-                [/5/g, "خ"],
-                [/2/g, "ء"],
-                [/T/g, "ط"],
-                [/S/g, "ص"],
-                [/D/g, "ض"],
-                [/Z/g, "ظ"],
-                [/kh/g, "خ"],
-                [/gh/g, "غ"],
-                [/ch/g, "ش"],
-                [/dj/g, "ج"],
-                [/th/g, "ث"],
-                [/dh/g, "ذ"],
-                [/sh/g, "ش"],
-                [/a/g, "ا"],
-                [/b/g, "ب"],
-                [/t/g, "ت"],
-                [/j/g, "ج"],
-                [/d/g, "د"],
-                [/r/g, "ر"],
-                [/z/g, "ز"],
-                [/s/g, "س"],
-                [/f/g, "ف"],
-                [/q/g, "ق"],
-                [/k/g, "ك"],
-                [/l/g, "ل"],
-                [/m/g, "م"],
-                [/n/g, "ن"],
-                [/h/g, "ه"],
-                [/w/g, "و"],
-                [/y/g, "ي"]
-            ];
+      return input.replace(/\s+/g, ' ').trim();
+    }
 
-            replacements.forEach(([pattern, replacement]) => {
-                input = input.replace(pattern, replacement);
-            });
+    document.getElementById('submit').addEventListener('click', () => {
+      const input = document.getElementById('text').value;
+      const output = convert2Arabic(input);
+      document.getElementById('text2').value = output || '🔍 الرجاء إدخال نص!';
+    });
 
-            return input.replace(/\s+/g, ' ').trim();
-        }
-
-        // 🎯 Button event listeners
-        document.getElementById('submit').addEventListener('click', () => {
-            const input = document.getElementById('text').value;
-            const output = convert2Arabic(input);
-            document.getElementById('text2').value = output || '🔍 الرجاء إدخال نص!';
-        });
-
-        document.getElementById('clear').addEventListener('click', () => {
-            document.getElementById('text').value = '';
-            document.getElementById('text2').value = '';
-        });
-    </script>
+    document.getElementById('clear').addEventListener('click', () => {
+      document.getElementById('text').value = '';
+      document.getElementById('text2').value = '';
+    });
+  </script>
 </body>
 </html>
