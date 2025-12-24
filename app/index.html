@@ -2,27 +2,31 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="webtoken" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <title>Convert2Arabic | 🌿 فرنكو إلى عربي</title>
 
-  <!-- Fonts -->
+  <!-- Fonts & Icons -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
-  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <!-- Bootstrap 5.3 (optimized) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
   <style>
     :root {
-      --primary: #27ae60;
-      --primary-dark: #219653;
-      --primary-light: #2ecc71;
-      --glass-bg: rgba(255, 255, 255, 0.15);
-      --glass-border: rgba(255, 255, 255, 0.25);
-      --text-light: #ffffff;
-      --text-muted: rgba(255, 255, 255, 0.85);
-      --shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
-      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --bg-color: #f0f2f5; /* Soft, neutral gray — like Slack or GitHub background */
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(0, 0, 0, 0.1);
+      --text-primary: #2d3748;
+      --text-muted: #718096;
+      --input-bg: #ffffff;
+      --input-border: #e2e8f0;
+      --input-focus-border: #48bb78;
+      --input-focus-shadow: 0 0 0 3px rgba(72, 187, 120, 0.2);
+      --btn-convert-bg: linear-gradient(120deg, #2ecc71, #27ae60);
+      --btn-clear-bg: #edf2f7;
+      --btn-clear-border: #cbd5e0;
+      --btn-clear-hover: #e2e8f0;
+      --footer-border: #e2e8f0;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     }
 
     * {
@@ -30,9 +34,9 @@
     }
 
     body {
-      background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+      background-color: var(--bg-color);
       font-family: 'Cairo', sans-serif;
-      color: var(--text-light);
+      color: var(--text-primary);
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -42,34 +46,26 @@
     }
 
     .converter-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--glass-border);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
       border-radius: 24px;
       box-shadow: var(--shadow);
       padding: 2rem;
       max-width: 900px;
       width: 100%;
-      animation: fadeInUp 0.6s ease-out;
+      animation: fadeInUp 0.5s ease-out;
     }
 
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .converter-header h1 {
       font-weight: 700;
       font-size: 2rem;
       margin-bottom: 0.5rem;
-      letter-spacing: 0.5px;
+      color: #2d3748;
     }
 
     .converter-header p {
@@ -85,27 +81,28 @@
       font-weight: 600;
       margin-bottom: 0.75rem;
       font-size: 1rem;
+      color: #4a5568;
     }
 
     textarea {
-      background: rgba(0, 0, 0, 0.12) !important;
-      border: 1px solid rgba(255, 255, 255, 0.35) !important;
-      color: var(--text-light) !important;
+      background: var(--input-bg) !important;
+      border: 1px solid var(--input-border) !important;
+      color: var(--text-primary) !important;
       border-radius: 16px !important;
       font-size: 1.1rem !important;
       padding: 1.1rem !important;
       height: 200px !important;
       resize: none;
-      transition: var(--transition);
+      transition: border 0.3s, box-shadow 0.3s;
     }
 
     textarea:focus {
-      border-color: rgba(255, 255, 255, 0.6) !important;
-      box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.3) !important;
+      border-color: var(--input-focus-border) !important;
+      box-shadow: var(--input-focus-shadow) !important;
     }
 
     textarea::placeholder {
-      color: rgba(255, 255, 255, 0.6) !important;
+      color: #a0aec0 !important;
       font-style: italic;
     }
 
@@ -119,61 +116,57 @@
     .btn-convert {
       flex: 1;
       min-width: 200px;
-      background: linear-gradient(120deg, var(--primary-light), var(--primary-dark));
+      background: var(--btn-convert-bg);
       border: none;
       color: white;
       padding: 14px 24px;
       border-radius: 50px;
       font-weight: 700;
       font-size: 1.1rem;
-      box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
-      transition: var(--transition);
+      box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     .btn-convert:hover {
       transform: translateY(-3px);
-      box-shadow: 0 7px 22px rgba(39, 174, 96, 0.65);
+      box-shadow: 0 6px 18px rgba(39, 174, 96, 0.45);
     }
 
     .btn-clear {
       flex: 1;
       min-width: 200px;
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      color: white;
+      background: var(--btn-clear-bg);
+      border: 1px solid var(--btn-clear-border);
+      color: #4a5568;
       padding: 14px 24px;
       border-radius: 50px;
       font-weight: 700;
-      transition: var(--transition);
+      transition: all 0.25s ease;
     }
 
     .btn-clear:hover {
-      background: rgba(255, 255, 255, 0.2);
+      background: var(--btn-clear-hover);
       transform: translateY(-2px);
+      border-color: #a0aec0;
     }
 
     .footer-meta {
       margin-top: 2rem;
       text-align: center;
       font-size: 0.95rem;
-      color: rgba(255, 255, 255, 0.8);
+      color: var(--text-muted);
       padding-top: 1.2rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      border-top: 1px solid var(--footer-border);
     }
 
-    /* Responsive tweaks */
     @media (max-width: 768px) {
       .converter-card {
         padding: 1.5rem;
       }
-      .converter-header h1 {
-        font-size: 1.75rem;
-      }
       .action-buttons {
         flex-direction: column;
       }
-      .btn-convert,
-      .btn-clear {
+      .btn-convert, .btn-clear {
         min-width: auto;
       }
     }
@@ -240,15 +233,17 @@
           <i class="fas fa-broom ms-2"></i> مسح الكل 🧹
         </button>
       </div>
-  
+
+      <div class="footer-meta">
+        💌 مصنوع بحب بواسطة <strong>Adem Kouki</strong> ❤️
+      </div>
     </div>
   </div>
 
-  <!-- ✅ Converter Logic (unchanged) -->
+  <!-- Converter Logic -->
   <script>
     function convert2Arabic(str) {
       if (!str) return '';
-
       let input = str.toLowerCase();
       const replacements = [
         [/7am/g, "حم"], [/fama/g, "فما"], [/bedhabt/g, "بالظبط"], [/7ata/g, "حتى"],
