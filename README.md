@@ -94,3 +94,5 @@ Managed outside the codebase
 Excluded from version control to maintain security and portability
 
 This mirrors how proxy and secret management is handled in real enterprise environments
+
+Syria-Git
